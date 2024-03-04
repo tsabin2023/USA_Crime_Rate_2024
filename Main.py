@@ -67,9 +67,27 @@ plt.bar('All States', avg_crime_rate, color='teal', width=0.1)
 # can pick any color we want from list of compatible color names
 # why didn't bar thickness change?
 plt.title('Average Crime Violence Rate per 100,000 Population in 2024 for All States')
-plt.xlabel('State')
+plt.xlabel('State or D.C.')
 plt.ylabel('Average Crime Violent Rate per 100,000 Population')
 # creates big rectangle, need to make thin bar either vertical or horizontal
+
+# create plot of all 50 states Crime Violence Rate per 100,000 Population in 2024 for All States
+# then figure out how to add avg to that plot
+all_states_dc_2 = db_sorted # all states and dc
+num_states2 = len(all_states_dc_2)
+colors = cm.rainbow(np.linspace(0, 1, num_states2))
+
+# plot crime rate of states and d.c.
+plt.figure(figsize=(10, 6))
+for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
+    plt.bar(state, crime_rate, color=colors[i])
+
+plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
+plt.xlabel('State or D.C')
+plt.ylabel('Crime Violent Rate per 100,000 population')
+plt.xticks(rotation=45)
+plt.tight_layout()
+# all squished together
 
 # plot only once at the end to show all plots
 plt.show()
