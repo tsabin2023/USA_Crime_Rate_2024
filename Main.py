@@ -1,3 +1,17 @@
+# CNE340 Winter Quarter
+# 3/4/2024
+# follow instructions below to complete program
+# https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
+# https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
+# further instructions from instructor
+# source Tyler Sabin
+# source Van Loung Voung
+
+# import libraries and install packages
+# python interpreter 3.11
+# pyarrow package also installed to prevent depreciation
+# MyConnect-sql package installed
+# pymysql package installed
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -58,18 +72,7 @@ plt.tight_layout()
 # Plot all states' rate chart, Van
 
 # Plot Average rate chart, Tyler
-# plot all 50 states and a thin bar for avg
-# below plots avg only.
 avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
-plt.figure(figsize=(10, 6))
-# can adjust bar thickness as needed
-plt.bar('All States', avg_crime_rate, color='teal', width=0.1)
-# can pick any color we want from list of compatible color names
-# why didn't bar thickness change?
-plt.title('Average Crime Violence Rate per 100,000 Population in 2024 for All States')
-plt.xlabel('State or D.C.')
-plt.ylabel('Average Crime Violent Rate per 100,000 Population')
-# creates big rectangle, need to make thin bar either vertical or horizontal
 
 # create plot of all 50 states Crime Violence Rate per 100,000 Population in 2024 for All States
 # then figure out how to add avg to that plot
@@ -82,12 +85,15 @@ plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
     plt.bar(state, crime_rate, color=colors[i])
 
+# gives dashed black bar or avg on 50 states plot
+plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
+
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
 plt.xlabel('State or D.C')
 plt.ylabel('Crime Violent Rate per 100,000 population')
 plt.xticks(rotation=45)
 plt.tight_layout()
-# all squished together
+# state names all squished together
 
 # plot only once at the end to show all plots
 plt.show()
