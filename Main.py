@@ -45,18 +45,36 @@ plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states['CrimeViolentRate'])):
     plt.bar(state, crime_rate, color=colors[i])
 
-plt.title('Top 3 States with Highest Crime Rates in 2024')
+plt.title('Top 3 States with Highest Crime Violence Rate per 100,000 population in 2024')
 plt.xlabel('State')
 plt.ylabel('Crime Violent Rate per 100,000 population')
 plt.xticks(rotation=45)
 plt.tight_layout()
 
+# sort bottom 3, Van
+# plot graph 2, Van
+
+# Plot chart including all states' rate and the Average rate
+# Plot all states' rate chart, Van
+
+# Plot Average rate chart, Tyler
+# plot all 50 states and a thin bar for avg
+# below plots avg only.
+avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
+plt.figure(figsize=(10, 6))
+# can adjust bar thickness as needed
+plt.bar('All States', avg_crime_rate, color='teal', width=0.1)
+# can pick any color we want from list of compatible color names
+# why didn't bar thickness change?
+plt.title('Average Crime Violence Rate per 100,000 Population in 2024 for All States')
+plt.xlabel('State')
+plt.ylabel('Average Crime Violent Rate per 100,000 Population')
+# creates big rectangle, need to make thin bar either vertical or horizontal
+
+# plot only once at the end to show all plots
 plt.show()
-# manually hit x in figure upper right corner to close figure and complete code
+# manually hit x in figures upper right corner to close and each figure and complete code
 
-# sort bottom 3 Van
-# plot graph 2 Van
-
-
+# close connection made by engine
 engine.dispose()
 print(f"DataFrame successfully sent to the '{table_name}' table in the '{dbname}' database.")
