@@ -33,7 +33,8 @@ engine = create_engine(connection_string)
 # this is my local location for testing but needs csv to be accessed non-locally in same file as cloned
 # for final version.
 
-file_path = 'C:\\Users\\sabin\\Downloads\\crime-rate-by-state-2024.csv' # for testing, not final path
+# we need to figure out how to use path for csv in main project folder
+file_path = 'C:\\Users\\sabin\\Downloads\\crime-rate-by-state-2024.csv'  # for testing, not final path
 df = pd.read_csv(file_path)
 print(df)
 # we need to pick a new table name.
@@ -52,7 +53,7 @@ print(df.columns)
 
 top_3_states = db_sorted.head(3)  # first 3 highest states by row from db
 num_states = len(top_3_states)
-colors = cm.rainbow(np.linspace(0, 1, num_states))
+colors = cm.rainbow(np.linspace(0, 1, num_states))  # why isn't rainbow method getting reached?
 
 # plot top 3 crime rate states
 plt.figure(figsize=(10, 6))
@@ -60,9 +61,9 @@ for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states[
     plt.bar(state, crime_rate, color=colors[i])
 
 plt.title('Top 3 States with Highest Crime Violence Rate per 100,000 population in 2024')
-plt.xlabel('State')
+plt.xlabel('State or District of Columbia')
 plt.ylabel('Crime Violent Rate per 100,000 population')
-plt.xticks(rotation=45)
+plt.xticks(rotation=45)  # angle seems good, but can be changed
 plt.tight_layout()
 
 # sort bottom 3, Van
@@ -86,14 +87,14 @@ for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states
     plt.bar(state, crime_rate, color=colors[i])
 
 # gives dashed black bar or avg on 50 states plot
+# need to figure out how to label avg on plot figure
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
 
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
-plt.xlabel('State or D.C')
+plt.xlabel(' 50 States and D.C')
 plt.ylabel('Crime Violent Rate per 100,000 population')
-plt.xticks(rotation=45)
+plt.xticks(rotation=90) # 90 needed to read, 0 degrees might also work
 plt.tight_layout()
-# state names all squished together
 
 # plot only once at the end to show all plots
 plt.show()
