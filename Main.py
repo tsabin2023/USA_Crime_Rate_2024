@@ -19,10 +19,10 @@ from sqlalchemy import create_engine
 import matplotlib.cm as cm
 
 # todo Created database in LAMP/WAMP database (This can be done before and use same database you used for other assignments)
-hostname="127.0.0.1"
-uname="root"
-pwd=""
-dbname="USA_Crime_Rate_2024"
+hostname = "127.0.0.1"
+uname = "root"
+pwd = ""
+dbname = "USA_Crime_Rate_2024"
 
 connection_string = f"mysql+pymysql://{uname}:{pwd}@{hostname}/{dbname}"
 engine = create_engine(connection_string)
@@ -53,7 +53,7 @@ print(df.columns)
 
 top_3_states = db_sorted.head(3)  # first 3 highest states by row from db
 num_states = len(top_3_states)
-colors = cm.rainbow(np.linspace(0, 1, num_states))  # why isn't rainbow method getting reached?
+colors = cm.rainbow(np.linspace(0, 1, num_states))  # module method seems to work
 
 # plot top 3 crime rate states
 plt.figure(figsize=(10, 6))
@@ -79,17 +79,21 @@ avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 # then figure out how to add avg to that plot
 all_states_dc_2 = db_sorted  # all states and dc
 num_states2 = len(all_states_dc_2)
-num_colors = 51
-colors = cm.rainbow(np.linspace(0, 1, num_colors))  # rainbow working I think, maybe too many colors
+# trying two different color maps and alternate them
+colormap1 = cm.tab10  # different python colormap than other attempts, seems to work
+colormap2 = cm.tab20  # another unique python color map, seems to work
 
 # plot crime rate of states and d.c.
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(12, 6))
 for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
-    plt.bar(state, crime_rate, color=colors[i % num_colors])
-# colors a little better, but not alternating color palette
+    if i % 2 == 0:
+        color = colormap1(i // 2 % colormap1.N)
+    else:
+        color = colormap2(i // 2 % colormap2.N)
+    plt.bar(state, crime_rate, color=color)
+# almost every state is a different color than the other, maybe leave as is
 
 # gives dashed black bar or avg on 50 states plot
-# need to figure out how to label avg on plot figure
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
 plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='black', fontsize=10, fontweight='bold')
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
