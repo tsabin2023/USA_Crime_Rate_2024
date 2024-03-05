@@ -77,23 +77,25 @@ avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 
 # create plot of all 50 states Crime Violence Rate per 100,000 Population in 2024 for All States
 # then figure out how to add avg to that plot
-all_states_dc_2 = db_sorted # all states and dc
+all_states_dc_2 = db_sorted  # all states and dc
 num_states2 = len(all_states_dc_2)
-colors = cm.rainbow(np.linspace(0, 1, num_states2))
+num_colors = 51
+colors = cm.rainbow(np.linspace(0, 1, num_colors))  # rainbow working I think, maybe too many colors
 
 # plot crime rate of states and d.c.
 plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
-    plt.bar(state, crime_rate, color=colors[i])
+    plt.bar(state, crime_rate, color=colors[i % num_colors])
+# colors a little better, but not alternating color palette
 
 # gives dashed black bar or avg on 50 states plot
 # need to figure out how to label avg on plot figure
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
-
+plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='black', fontsize=10, fontweight='bold')
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
-plt.xlabel(' 50 States and D.C')
+plt.xlabel('50 States and D.C')
 plt.ylabel('Crime Violent Rate per 100,000 population')
-plt.xticks(rotation=90) # 90 needed to read, 0 degrees might also work
+plt.xticks(rotation=90)  # 90 needed to read, 0 degrees might also work
 plt.tight_layout()
 
 # plot only once at the end to show all plots
