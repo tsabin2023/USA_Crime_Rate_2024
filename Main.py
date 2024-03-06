@@ -1,5 +1,5 @@
 # CNE340 Winter Quarter
-# 3/4/2024
+# 3/5/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
@@ -19,10 +19,10 @@ from sqlalchemy import create_engine
 import matplotlib.cm as cm
 
 # todo Created database in LAMP/WAMP database (This can be done before and use same database you used for other assignments)
-hostname="127.0.0.1"
-uname="root"
-pwd=""
-dbname="USA_Crime_Rate_2024"
+hostname = "127.0.0.1"
+uname = "root"
+pwd = ""
+dbname = "USA_Crime_Rate_2024"
 
 connection_string = f"mysql+pymysql://{uname}:{pwd}@{hostname}/{dbname}"
 engine = create_engine(connection_string)
@@ -33,10 +33,9 @@ engine = create_engine(connection_string)
 # this is my local location for testing but needs csv to be accessed non-locally in same file as cloned
 # for final version.
 
-# we need to figure out how to use path for csv in main project folder
-file_path = 'C:\\Users\\sabin\\Downloads\\crime-rate-by-state-2024.csv'  # for testing, not final path
-df = pd.read_csv(file_path)
-print(df)
+with open('crime-rate-by-state-2024.csv') as file_path:
+    df = pd.read_csv(file_path)
+    print(df)
 # we need to pick a new table name.
 table_name = 'test_table_name' # 'CrimeRate' is a column name in csv file so the table name must be different
 df.to_sql(table_name, engine, if_exists='replace', index=False)
@@ -53,7 +52,7 @@ print(df.columns)
 
 top_3_states = db_sorted.head(3)  # first 3 highest states by row from db
 num_states = len(top_3_states)
-colors = cm.rainbow(np.linspace(0, 1, num_states))  # why isn't rainbow method getting reached?
+colors = cm.rainbow(np.linspace(0, 1, num_states))  # module method seems to work
 
 # plot top 3 crime rate states
 plt.figure(figsize=(10, 6))
@@ -79,17 +78,21 @@ avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 # then figure out how to add avg to that plot
 all_states_dc_2 = db_sorted  # all states and dc
 num_states2 = len(all_states_dc_2)
-num_colors = 51
-colors = cm.rainbow(np.linspace(0, 1, num_colors))  # rainbow working I think, maybe too many colors
+# trying two different color maps and alternate them
+colormap1 = cm.tab10  # different python colormap than other attempts, seems to work
+colormap2 = cm.tab20  # another unique python color map, seems to work
 
 # plot crime rate of states and d.c.
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(12, 6))
 for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
-    plt.bar(state, crime_rate, color=colors[i % num_colors])
-# colors a little better, but not alternating color palette
+    if i % 2 == 0:
+        color = colormap1(i // 2 % colormap1.N)
+    else:
+        color = colormap2(i // 2 % colormap2.N)
+    plt.bar(state, crime_rate, color=color)
+# almost every state is a different color than the other, maybe leave as is
 
 # gives dashed black bar or avg on 50 states plot
-# need to figure out how to label avg on plot figure
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
 plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='black', fontsize=10, fontweight='bold')
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
