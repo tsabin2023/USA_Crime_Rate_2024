@@ -81,6 +81,7 @@ num_states2 = len(all_states_dc_2)
 # trying two different color maps and alternate them
 colormap1 = cm.tab20  # different python colormap than other attempts, seems to work
 colormap2 = cm.tab20b  # another unique python color map, seems to work
+# find a way to add tab20c so that no colors repeat in next version.
 
 # plot crime rate of states and d.c.
 plt.figure(figsize=(12, 6))
