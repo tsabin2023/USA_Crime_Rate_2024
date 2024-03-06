@@ -1,5 +1,5 @@
 # CNE340 Winter Quarter
-# 3/4/2024
+# 3/5/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
@@ -33,10 +33,9 @@ engine = create_engine(connection_string)
 # this is my local location for testing but needs csv to be accessed non-locally in same file as cloned
 # for final version.
 
-# we need to figure out how to use path for csv in main project folder
-file_path = 'C:\\Users\\sabin\\Downloads\\crime-rate-by-state-2024.csv'  # for testing, not final path
-df = pd.read_csv(file_path)
-print(df)
+with open('crime-rate-by-state-2024.csv') as file_path:
+    df = pd.read_csv(file_path)
+    print(df)
 # we need to pick a new table name.
 table_name = 'test_table_name' # 'CrimeRate' is a column name in csv file so the table name must be different
 df.to_sql(table_name, engine, if_exists='replace', index=False)
