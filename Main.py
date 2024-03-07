@@ -35,7 +35,7 @@ engine = create_engine(connection_string)
 
 with open('crime-rate-by-state-2024.csv') as file_path:
     df = pd.read_csv(file_path)
-    print(df)
+    # print(df)
 # we need to pick a new table name.
 table_name = 'test_table_name' # 'CrimeRate' is a column name in csv file so the table name must be different
 df.to_sql(table_name, engine, if_exists='replace', index=False)
@@ -47,24 +47,64 @@ db_sorted = pd.read_sql(query, engine)
 
 # sort out top 3 states from database
 
-print(df.columns)
+# print(df.columns)
 # might want to rename columns and then use new column names for plotting
+values_at = db_sorted['CrimeViolentRate'].head(3)
+# print(values_at)
 
 top_3_states = db_sorted.head(3)  # first 3 highest states by row from db
 num_states = len(top_3_states)
 colors = cm.rainbow(np.linspace(0, 1, num_states))  # module method seems to work
 
 # plot top 3 crime rate states
+#     For making the Bar Chart
+#
+# Syntax: plt.bar(x, height, color)
+#
+#     For adding text on the Bar Chart
+#
+# Syntax: plt.text(x, y, s, ha, Bbox)
+
+#axes = plt.plot.bar(rot=0, subplots=True)
+x = num_states
+y = values_at
+a = range(3)
+b = range(3)
+def addlabels(a,b):
+    for i in range(len(a)):
+         plt.text(i,b[i],b[i])
+
+
+height = top_3_states['CrimeViolentRate']
+s = top_3_states['CrimeViolentRate']
+color = colors
+x = np.arange(len(top_3_states['state']))  # the label locations
+width = 0.25  # the width of the bars
+multiplier = 0
+fig, ax = plt.subplots(layout='constrained')
+
 plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states['CrimeViolentRate'])):
     plt.bar(state, crime_rate, color=colors[i])
 
+for attribute in top_3_states['CrimeViolentRate']:
+    #print(ax)
+    offset = width * multiplier
+    rects = ax.bar(x + offset, attribute, width, label='CrimeViolentRate')
+    ax.bar_label(rects, padding=3)
+    multiplier += 1
+#     for p in ax.patches:
+#         height = p.get_height()
+#         x, y = p.get_xy()
+#         ax.annotate('{}'.format(height), (x, y + height))
+
+addlabels(a, b)
 plt.title('Top 3 States with Highest Crime Violence Rate per 100,000 population in 2024')
 plt.xlabel('State or District of Columbia')
 plt.ylabel('Crime Violent Rate per 100,000 population')
 plt.xticks(rotation=45)  # angle seems good, but can be changed
-plt.tight_layout()
-
+#plt.text(x, y, s)
+#plt.tight_layout()
 # sort bottom 3, Van
 # plot graph 2, Van
 
