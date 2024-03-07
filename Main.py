@@ -1,11 +1,12 @@
 # CNE340 Winter Quarter
-# 3/5/2024
+# 3/6/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
 # further instructions from instructor
 # source Tyler Sabin
 # source Van Loung Voung
+# source Ix Procopios
 
 # import libraries and install packages
 # python interpreter 3.11
