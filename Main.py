@@ -1,5 +1,5 @@
 # CNE340 Winter Quarter
-# 3/8/2024
+# 3/9/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
@@ -93,7 +93,7 @@ for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states
     plt.bar(state, crime_rate, color=color)
 # all 50 states and distinct have different colors in an order that is easier to view
 
-# gives dashed black bar or avg on 50 states plot
+# gives dashed black bar on avg on 50 states plot
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
 plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='black', fontsize=10, fontweight='bold')
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
