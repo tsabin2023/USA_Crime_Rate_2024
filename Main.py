@@ -1,5 +1,5 @@
 # CNE340 Winter Quarter
-# 3/9/2024
+# 3/10/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
@@ -44,12 +44,14 @@ df.to_sql(table_name, engine, if_exists='replace', index=False)
 
 # todo Python code pulls data from database and analyzes analytics
 # python code pulls data from database and analyzes analytics, is what we want it to do
-query = f"SELECT * FROM {table_name} ORDER BY CrimeRate DESC" # pulling data from table in db
+# this is allowing the 50 state plot figure 2 to order correctly, I think
+query = f"SELECT * FROM {table_name} ORDER BY CrimeRate DESC"  # pulling data from table in db
 db_sorted = pd.read_sql(query, engine)
 
 # sort out top 3 states from database
 
 # print(df.columns)
+# maybe no longer need this line
 values_at = db_sorted['CrimeViolentRate'].head(3)
 # print(values_at)
 # print(db_sorted['CrimeViolentRate'])
@@ -61,7 +63,7 @@ colors = cm.rainbow(np.linspace(0, 1, num_states))  # module method seems to wor
 # plotting figure and using enumerate to add a counter i and zip to make two column tuple
 plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states['CrimeViolentRate'])):
-    plt.bar(state, crime_rate, color=colors[i])
+    plt.bar(state, crime_rate, color=colors[i], edgecolor='black')
     plt.text(state, crime_rate, str(round(crime_rate, 2)), ha='center', va='bottom')  # adding text to the top of bar
 
 plt.title('Top 3 states or districts Crime Violence Rate per 100,000 population in 2024')
@@ -90,7 +92,7 @@ for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states
     else:
         color = cm.tab20c(19 - (i // 3 % 20))  # Reverses the order of tab20c colors
 
-    plt.bar(state, crime_rate, color=color)
+    plt.bar(state, crime_rate, color=color, edgecolor='black')
 # all 50 states and distinct have different colors in an order that is easier to view
 
 # gives dashed black bar on avg on 50 states plot
