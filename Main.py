@@ -1,5 +1,5 @@
 # CNE340 Winter Quarter
-# 3/8/2024
+# 3/10/2024
 # follow instructions below to complete program
 # https://rtc.instructure.com/courses/2439016/assignments/31830681?module_item_id=79735823
 # https://rtc.instructure.com/courses/2439016/files/236685445?module_item_id=79735228
@@ -10,9 +10,10 @@
 
 # import libraries and install packages
 # python interpreter 3.11
-# pyarrow package also installed to prevent depreciation
-# MyConnect-sql package installed
-# pymysql package installed
+# pandas package
+# matplot lib package
+# pymysql package
+
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -43,24 +44,31 @@ df.to_sql(table_name, engine, if_exists='replace', index=False)
 
 # todo Python code pulls data from database and analyzes analytics
 # python code pulls data from database and analyzes analytics, is what we want it to do
-query = f"SELECT * FROM {table_name} ORDER BY CrimeRate DESC" # pulling data from table in db
+# this is allowing the 50 state plot figure 2 to order correctly, I think
+query = f"SELECT * FROM {table_name} ORDER BY CrimeRate DESC"  # pulling data from table in db
 db_sorted = pd.read_sql(query, engine)
 
 # sort out top 3 states from database
 
 # print(df.columns)
+# maybe no longer need this line
 values_at = db_sorted['CrimeViolentRate'].head(3)
 # print(values_at)
+# print(db_sorted['CrimeViolentRate'])
 
-top_3_states = db_sorted.head(3)  # first 3 highest states by row from db
+top_3_states = db_sorted.nlargest(3, 'CrimeViolentRate')  # first 3 highest states by row from db filtered
 num_states = len(top_3_states)
 colors = cm.rainbow(np.linspace(0, 1, num_states))  # module method seems to work
 
 # plotting figure and using enumerate to add a counter i and zip to make two column tuple
 plt.figure(figsize=(10, 6))
 for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states['CrimeViolentRate'])):
-    plt.bar(state, crime_rate, color=colors[i])
+    plt.bar(state, crime_rate, color=colors[i], edgecolor='black')
     plt.text(state, crime_rate, str(round(crime_rate, 2)), ha='center', va='bottom')  # adding text to the top of bar
+
+plt.title('Top 3 states or districts Crime Violence Rate per 100,000 population in 2024')
+plt.xlabel('50 States and D.C')
+plt.ylabel('Crime Violent Rate per 100,000 population')
 
 # Plot chart including all states' rate and the Average rate
 # Plot all states' rate chart, Van
@@ -69,25 +77,25 @@ for i, (state, crime_rate) in enumerate(zip(top_3_states['state'], top_3_states[
 avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 
 # create plot of all 50 states Crime Violence Rate per 100,000 Population in 2024 for All States
-# then figure out how to add avg to that plot
 all_states_dc_2 = db_sorted  # all states and dc
 num_states2 = len(all_states_dc_2)
-# trying two different color maps and alternate them
-colormap1 = cm.tab20  # different python colormap than other attempts, seems to work
-colormap2 = cm.tab20b  # another unique python color map, seems to work
-# find a way to add tab20c so that no colors repeat in next version.
 
-# plot crime rate of states and d.c.
+# plot crime rate of states and d.c., tab20c colors displayed in reverse for distinguishing colors
 plt.figure(figsize=(12, 6))
-for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
-    if i % 2 == 0:
-        color = colormap1(i // 2 % colormap1.N)
-    else:
-        color = colormap2(i // 2 % colormap2.N)
-    plt.bar(state, crime_rate, color=color)
-# almost every state is a different color than the other, maybe leave as is
 
-# gives dashed black bar or avg on 50 states plot
+# plotting figure and using enumerate to add a counter i and zip to make two column tuple
+for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
+    if i % 3 == 0:
+        color = cm.tab20(i // 3 % 20)
+    elif i % 3 == 1:
+        color = cm.tab20b(i // 3 % 20)
+    else:
+        color = cm.tab20c(19 - (i // 3 % 20))  # Reverses the order of tab20c colors
+
+    plt.bar(state, crime_rate, color=color, edgecolor='black')
+# all 50 states and distinct have different colors in an order that is easier to view
+
+# gives dashed black bar on avg on 50 states plot
 plt.axhline(avg_crime_rate, color='black', linestyle='--', linewidth=2)
 plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='black', fontsize=10, fontweight='bold')
 plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
