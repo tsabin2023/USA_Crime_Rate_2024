@@ -51,7 +51,6 @@ db_sorted = pd.read_sql(query, engine)
 
 # sort bottom 3, Van
 low_3_states, low_3_crime_violent_rate = three_lowest_state(table_name, engine)
-print(low_3_states, low_3_crime_violent_rate)
 
 # plot graph 2, Van
 # defined figure size
