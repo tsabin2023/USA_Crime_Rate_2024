@@ -6,7 +6,7 @@
 # Import section
 import pandas as pd
 import numpy as np
-from matplotlib import pyplot as plt, cm
+from matplotlib import pyplot as plt
 from sqlalchemy import create_engine
 
 def sort_all_states(table, engine):
