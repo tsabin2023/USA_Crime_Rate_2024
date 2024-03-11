@@ -76,33 +76,6 @@ plt.tight_layout()
 # Plot Average rate chart, Tyler
 avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 
-# # create plot of all 50 states Crime Violence Rate per 100,000 Population in 2024 for All States
-# # then figure out how to add avg to that plot
-# all_states_dc_2 = db_sorted  # all states and dc
-# num_states2 = len(all_states_dc_2)
-# # trying two different color maps and alternate them
-# colormap1 = cm.tab20  # different python colormap than other attempts, seems to work
-# colormap2 = cm.tab20b  # another unique python color map, seems to work
-# # find a way to add tab20c so that no colors repeat in next version.
-#
-# # plot crime rate of states and d.c.
-# plt.figure(figsize=(12, 6))
-# for i, (state, crime_rate) in enumerate(zip(all_states_dc_2['state'], all_states_dc_2['CrimeViolentRate'])):
-#     if i % 2 == 0:
-#         color = colormap1(i // 2 % colormap1.N)
-#     else:
-#         color = colormap2(i // 2 % colormap2.N)
-#     plt.bar(state, crime_rate, color=color)
-# almost every state is a different color than the other, maybe leave as is
-
-# # gives dashed black bar or avg on 50 states plot
-# plt.axhline(avg_crime_rate, color='red', linestyle='--', linewidth=2)
-# plt.text(-0.5, avg_crime_rate, f'Average Rate: {avg_crime_rate:.2f}', color='red', fontsize=10, fontweight='bold')
-# plt.title('All State and D.C. Crime Violence Rate per 100,000 population in 2024')
-# plt.xlabel('50 States and D.C')
-# plt.ylabel('Crime Violent Rate per 100,000 population')
-# plt.xticks(rotation=90)  # 90 needed to read, 0 degrees might also work
-# plt.tight_layout()
 
 # Plot all states' rate chart, Van
 #all_state = db_sorted['state']
