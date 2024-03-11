@@ -76,10 +76,7 @@ plt.tight_layout()
 # Plot Average rate chart, Tyler
 avg_crime_rate = db_sorted['CrimeViolentRate'].mean()
 
-
 # Plot all states' rate chart, Van
-#all_state = db_sorted['state']
-#all_state_Crime_Violent_Rate = db_sorted['CrimeViolentRate']
 all_state, all_state_Crime_Violent_Rate = sort_all_states(table_name, engine)
 
 plt.figure(figsize=(12, 6))
@@ -98,8 +95,6 @@ plt.tight_layout()
 # plot only once at the end to show all plots
 plt.show()
 # manually hit x in figures upper right corner to close and each figure and complete code
-
-
 
 # close connection made by engine
 engine.dispose()
